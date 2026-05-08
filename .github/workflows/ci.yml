@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tooling
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tooling/requirements-dev.txt
+      - name: Install dev tools
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements-dev.txt
+      - name: Ruff
+        run: ruff check .
+      - name: Bandit
+        run: bandit -q -c pyproject.toml -r . -x ./.venv
+      - name: Pytest
+        run: pytest
+
+  semgrep:
+    name: semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    steps:
+      - uses: actions/checkout@v4
+      - name: Semgrep
+        run: semgrep ci --config p/python --error tooling
