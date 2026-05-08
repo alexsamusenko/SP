@@ -5,7 +5,8 @@ from __future__ import annotations
 import argparse
 import os
 import re
-import subprocess
+import shutil
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -17,13 +18,33 @@ TOOLING = Path(__file__).resolve().parent
 LOG_PATH = TOOLING / "logs" / "last_diff_review.txt"
 DEFAULT_MAX = 28_000
 
+# Символы, недопустимые в аргументе `git diff` (защита от подстановки команд).
+_INVALID_REV_CHARS = frozenset({";", "|", "&", "$", "`", "\n", "\r", "<", ">", "(", ")"})
 
-def _git_toplevel() -> Path:
-    r = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"],
+
+def _git_executable() -> str:
+    exe = shutil.which("git")
+    if not exe:
+        raise RuntimeError("исполняемый файл git не найден в PATH")
+    return exe
+
+
+def _validate_revision(s: str | None) -> None:
+    if s is None:
+        return
+    if len(s) > 300:
+        raise ValueError("слишком длинный аргумент revision")
+    if any(c in _INVALID_REV_CHARS for c in s):
+        raise ValueError("недопустимые символы в revision (используйте ref вроде main...HEAD)")
+
+
+def _git_toplevel(git_exe: str) -> Path:
+    r = subprocess.run(  # nosec B603
+        [git_exe, "rev-parse", "--show-toplevel"],
         capture_output=True,
         text=True,
         check=False,
+        shell=False,
     )
     if r.returncode != 0:
         msg = (r.stderr or r.stdout or "").strip() or "not a git repository"
@@ -32,13 +53,21 @@ def _git_toplevel() -> Path:
 
 
 def get_diff_text(revision_range: str | None) -> str:
-    root = _git_toplevel()
-    cmd = ["git", "-C", str(root), "diff"]
+    _validate_revision(revision_range)
+    git_exe = _git_executable()
+    root = _git_toplevel(git_exe)
+    cmd: list[str] = [git_exe, "-C", str(root), "diff"]
     if revision_range:
         cmd.append(revision_range)
     else:
         cmd.append("HEAD")
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    r = subprocess.run(  # nosec B603
+        cmd,
+        capture_output=True,
+        text=True,
+        check=False,
+        shell=False,
+    )
     if r.returncode != 0:
         sys.stderr.write(r.stderr or "")
         raise RuntimeError(f"git diff failed with exit {r.returncode}")
@@ -90,6 +119,9 @@ def main() -> None:
         diff = get_diff_text(args.revision)
     except RuntimeError as e:
         print(e, file=sys.stderr)
+        sys.exit(2)
+    except ValueError as e:
+        print(f"{e}", file=sys.stderr)
         sys.exit(2)
 
     if not diff.strip():

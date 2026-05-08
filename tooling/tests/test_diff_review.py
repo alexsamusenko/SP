@@ -18,3 +18,8 @@ def test_clip_for_llm_blocks_secrets() -> None:
 def test_get_diff_text_runs_in_repo() -> None:
     s = get_diff_text(None)
     assert isinstance(s, str)
+
+
+def test_get_diff_text_rejects_shady_revision() -> None:
+    with pytest.raises(ValueError):
+        get_diff_text("main;evil")
