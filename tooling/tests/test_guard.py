@@ -9,4 +9,4 @@ def test_safe_accepts_normal_text() -> None:
 
 def test_safe_blocks_secrets() -> None:
     with pytest.raises(ValueError):
-        safe_snippet("BEGIN PRIVATE\n-----")
+        safe_snippet("-----BEGIN PRIVATE KEY-----\nMIIE...")
