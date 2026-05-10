@@ -2,4 +2,4 @@ litellm>=1.83
 ruff>=0.15
 semgrep>=1.160
 pytest>=8
-bandit[toml]>=1.7
+bandit[toml]>=1.9.4
