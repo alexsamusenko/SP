@@ -20,3 +20,11 @@ bash flow_review.sh
 ```bash
 FLOW_SKIP_DIFF_REVIEW=1 bash flow_review.sh
 ```
+
+Дополнительный LLM-запрос через тот же guard (по умолчанию **Ollama**, см. `tooling/env.llm.example`):
+
+```bash
+cd /mnt/d/Flow/tooling && source .venv/bin/activate
+python cloud_ask.py файл.txt
+# или: git diff HEAD | python cloud_ask.py
+```
