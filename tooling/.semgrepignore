@@ -1,0 +1,6 @@
+# Локальное окружение и кэши — не наш код
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+logs/
