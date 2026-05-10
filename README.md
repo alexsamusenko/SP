@@ -13,6 +13,18 @@
 
 Подробнее: `docs/architecture-phase2.md` и карта `docs/brain/00 Карта Flow.md`.
 
+## Новый Python-сервис под `commercial/`
+
+Из шаблона `commercial/hello-service` (нужны WSL и bash):
+
+```bash
+cd /mnt/d/Flow/tooling
+chmod +x scaffold_commercial.sh   # один раз
+make scaffold NAME=billing-api
+```
+
+Или: `bash scaffold_commercial.sh billing-api`. Dependabot для новых папок добавьте вручную по образцу в `.github/dependabot.yml`.
+
 ## Быстрый старт (WSL)
 
 ```bash

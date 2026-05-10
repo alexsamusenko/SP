@@ -19,7 +19,7 @@ jobs:
           cache: pip
           cache-dependency-path: |
             tooling/requirements-dev.txt
-            commercial/hello-service/requirements-dev.txt
+            commercial/**/requirements-dev.txt
       - name: Install dev tools
         run: |
           python -m pip install -U pip
@@ -31,12 +31,20 @@ jobs:
       - name: Pytest
         run: pytest
 
-      - name: hello-service (ruff + pytest)
-        working-directory: commercial/hello-service
+      - name: Commercial services (ruff + pytest)
+        working-directory: .
         run: |
-          python -m pip install -r requirements-dev.txt
-          ruff check .
-          pytest
+          set -euo pipefail
+          found=0
+          for req in commercial/*/requirements-dev.txt; do
+            [[ -f "$req" ]] || continue
+            found=1
+            dir=$(dirname "$req")
+            echo "=== $dir ==="
+            python -m pip install -r "$req"
+            ( cd "$dir" && ruff check . && pytest )
+          done
+          [[ "$found" -eq 1 ]] || { echo "Нет ни одного commercial/*/requirements-dev.txt"; exit 1; }
 
   semgrep:
     name: semgrep
@@ -46,4 +54,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Semgrep
-        run: semgrep scan --config p/python --error tooling commercial/hello-service
+        run: semgrep scan --config p/python --error tooling commercial

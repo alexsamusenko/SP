@@ -1,0 +1,4 @@
+# локальные артефакты под commercial/*/
+**/.venv/
+**/__pycache__/
+.pytest_cache/
