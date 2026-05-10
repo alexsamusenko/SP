@@ -17,7 +17,9 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: tooling/requirements-dev.txt
+          cache-dependency-path: |
+            tooling/requirements-dev.txt
+            commercial/hello-service/requirements-dev.txt
       - name: Install dev tools
         run: |
           python -m pip install -U pip
@@ -32,7 +34,7 @@ jobs:
       - name: hello-service (ruff + pytest)
         working-directory: commercial/hello-service
         run: |
-          python -m pip install ruff pytest
+          python -m pip install -r requirements-dev.txt
           ruff check .
           pytest
 

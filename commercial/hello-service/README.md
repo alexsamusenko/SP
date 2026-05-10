@@ -6,7 +6,7 @@
 cd commercial/hello-service
 python3 -m venv .venv
 source .venv/bin/activate
-pip install pytest ruff
+pip install -r requirements-dev.txt
 ruff check .
 pytest
 python -m hello_service.main
