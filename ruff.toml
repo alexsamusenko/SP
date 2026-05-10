@@ -1,0 +1,5 @@
+# Общие настройки Ruff для tooling/, commercial/*/ и любых каталогов внутри Flow.
+line-length = 100
+target-version = "py312"
+
+extend-exclude = [".venv"]

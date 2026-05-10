@@ -1,0 +1,4 @@
+# Bash в WSL/Linux ломается на CRLF (ошибка вида: set: pipefail: invalid option).
+*.sh text eol=lf
+Makefile text eol=lf
+ruff.toml text eol=lf

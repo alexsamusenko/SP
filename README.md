@@ -41,6 +41,8 @@ make review
 
 При push выполняются проверки из `.github/workflows/ci.yml`.
 
+Расшаренный **Ruff**: корневой `ruff.toml` (длина строки, целевая версия Python), подпроекты дублировать не нужно.
+
 **Dependabot** (`.github/dependabot.yml`): еженедельно предлагает обновления для `tooling/requirements-dev.txt` и периодически — для GitHub Actions.
 
 Хуки перед коммитом (один раз после клонирования):

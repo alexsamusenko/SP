@@ -1,6 +1,7 @@
 # Поток: PR/ветка → Coder (изменения) → Tester (pytest/CI) → Reviewer (ruff/semgrep + LLM-комментарий опционально) → merge только если зелёно → Deployer вручную.
 # Внешние LLM (опционально): только после фильтра секретов; прод-секреты никогда в промпт.
-# Каталоги: commercial | personal | external (чужие клоны; см. external/README.md).
+# Каталоги: commercial | personal | external (чужие клоны; см. external/README.md, personal/README.md).
+# Стилистика Python: корневой `ruff.toml` для всех пакетов в дереве.
 #
 # Локально один проход: `cd tooling && bash flow_review.sh` (или `FLOW_SKIP_DIFF_REVIEW=1` только статика;
 # аргумент `main...HEAD` передаётся в diff_review).
