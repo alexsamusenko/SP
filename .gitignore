@@ -1,6 +1,13 @@
+# виртуальные окружения вложенных проектов
+.venv/
+venv/
+
 .env
 .env.*
 .secrets/
 **/secrets/
 *.pem
 *.key
+
+# Локальные логи скриптов (coder / diff_review)
+tooling/logs/

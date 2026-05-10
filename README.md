@@ -6,7 +6,7 @@
 
 | Путь | Назначение |
 |------|------------|
-| `commercial/`, `personal/`, `external/` | Разделение проектов и чужих клонов |
+| `commercial/`, `personal/`, `external/` | Разделение проектов и чужих клонов; пример: `commercial/hello-service/` |
 | `tooling/` | Python-утилиты, guard, локальный LLM (Ollama + LiteLLM), скрипты ревью |
 | `docs/` | Архитектура (`architecture-phase2.md`), Obsidian-хаб (`docs/brain/`) |
 | `.github/` | CI и шаблон PR |

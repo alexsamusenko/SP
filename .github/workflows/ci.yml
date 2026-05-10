@@ -29,6 +29,13 @@ jobs:
       - name: Pytest
         run: pytest
 
+      - name: hello-service (ruff + pytest)
+        working-directory: commercial/hello-service
+        run: |
+          python -m pip install ruff pytest
+          ruff check .
+          pytest
+
   semgrep:
     name: semgrep
     runs-on: ubuntu-latest
@@ -37,4 +44,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Semgrep
-        run: semgrep scan --config p/python --error tooling
+        run: semgrep scan --config p/python --error tooling commercial/hello-service
