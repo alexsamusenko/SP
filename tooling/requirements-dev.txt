@@ -1,5 +1,5 @@
 litellm>=1.83
 ruff>=0.15
-semgrep>=1.160
+semgrep>=1.162.0
 pytest>=8
 bandit[toml]>=1.7
